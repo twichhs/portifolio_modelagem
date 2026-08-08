@@ -15,12 +15,12 @@ Minhas soluções são desenvolvidas com foco em performance, automação de pip
 *   **Machine Learning e Deep Learning:** Scikit-Learn, TensorFlow, Keras
 ---
 
-## 📂 Projetos em Destaque
+## 📂 Projetos
 
-Abaixo estão os principais projetos focados em modelagem. Clique no título de cada um para acessar o repositório detalhado, o código-fonte e as conclusões das análises.
+Abaixo estão os projetos focados em modelagem. Clique no título de cada um para acessar o repositório detalhado, o código-fonte e as conclusões das análises.
 
 ### 1. [Modelagem de Risco de Crédito (Credit Scoring)](#)
-* **Objetivo:** Desenvolver um modelo de classificação para prever a probabilidade de inadimplência (PD - *Probability of Default*) de novos solicitantes de crédito.
+* **Objetivo:** Desenvolver um modelo de classificação para prever fraudes de transações de cartão de credito.
 * **Técnicas Utilizadas:** Teste de hipóteses para seleção de variáveis, tratamento de dados desbalanceados e modelo de Decision Tree.
 * **Impacto de Negócio:** Redução simulada da taxa de aprovação de maus pagadores em X%, maximizando o lucro esperado da carteira.
 * **Stack:** Python, Pandas, Scikit-Learn, Matplotlib e Seaborn.
