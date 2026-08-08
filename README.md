@@ -17,12 +17,12 @@ Minhas soluções são desenvolvidas com foco em performance, automação de pip
 
 ## 📂 Projetos
 
-Abaixo estão os projetos focados em modelagem. Clique no título de cada um para acessar o repositório detalhado, o código-fonte e as conclusões das análises.
+Abaixo estão os projetos focados em modelagem.
 
-### 1. [Modelagem de Risco de Crédito (Credit Scoring)](#)
+### 1. [Modelo de Prevenção de Fraude de Cartão de Crédito] (#)
 * **Objetivo:** Desenvolver um modelo de classificação para prever fraudes de transações de cartão de credito.
 * **Técnicas Utilizadas:** Teste de hipóteses para seleção de variáveis, tratamento de dados desbalanceados e modelo de Decision Tree.
-* **Impacto de Negócio:** Redução simulada da taxa de aprovação de maus pagadores em X%, maximizando o lucro esperado da carteira.
+* **Impacto de Negócio:** Redução de loss por fraude.
 * **Stack:** Python, Pandas, Scikit-Learn, Matplotlib e Seaborn.
 
 ---
