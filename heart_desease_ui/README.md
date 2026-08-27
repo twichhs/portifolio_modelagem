@@ -1,122 +1,62 @@
-# Previsao de Risco de Doencas Cardiovasculares
+# Previsão de Risco de Doença Cardiovascular
 
-Este projeto apresenta uma aplicacao em Streamlit para estimar risco de doenca cardiaca a partir de dados clinicos, sinais vitais e habitos de vida. O modelo utilizado e uma Regressao Logistica empacotada em um pipeline de pre-processamento e classificacao.
+Aplicação em Streamlit para estimar o risco de doença cardíaca a partir de dados clínicos, sinais vitais e hábitos de vida. O modelo é uma Regressão Logística empacotada em um pipeline de pré-processamento e classificação, treinada para demonstrar a etapa de colocação de um modelo em produção por meio de uma interface simples e reutilizável.
 
-O objetivo principal e demonstrar uma etapa de colocacao de modelo em producao por meio de uma interface simples, acessivel e reutilizavel.
+**Dataset:** [Kaggle — Heart Disease Risk 2026](https://www.kaggle.com/datasets/srisyra02/heart-disease-risk-2026)
 
-## Aviso Importante
+> Projeto com finalidade acadêmica e educacional. A previsão gerada pelo modelo não substitui avaliação médica, diagnóstico, tratamento ou orientação profissional.
 
-Este projeto tem finalidade academica e educacional. A previsao gerada pelo modelo nao substitui avaliacao medica, diagnostico, tratamento ou orientacao profissional. Qualquer decisao relacionada a saude deve ser tomada com acompanhamento de um profissional qualificado.
+## Metodologia
 
-## Funcionalidades
+O modelo foi treinado e avaliado com validação cruzada K-Fold (5 splits). Um ponto central da modelagem foi comparar o desempenho com as features originais e com as features padronizadas por `StandardScaler`:
 
-- Interface web em Streamlit para preenchimento dos dados do paciente.
-- Formulario organizado por grupos de informacoes:
-  - dados do paciente;
-  - sinais vitais e exames;
-  - informacoes cardiologicas;
-  - estilo de vida.
-- Previsao de classificacao de risco cardiaco.
-- Exibicao da probabilidade estimada pelo modelo, quando disponivel.
-- Visualizacao dos dados enviados ao modelo.
-- Aba com metricas e graficos gerados durante a etapa de treino.
+| Versão | Acurácia | Precisão (risco) | Recall (risco) | F1 (risco) |
+|---|---|---|---|---|
+| Features originais | 0.83 | 0.75 | 0.65 | 0.70 |
+| Features padronizadas | 0.90 | 0.86 | 0.82 | 0.84 |
 
-## Estrutura do Projeto
+A padronização trouxe ganho consistente em todas as métricas, o que motivou o uso das features escaladas no modelo final. O pipeline de produção empacota pré-processamento e classificador em um único objeto scikit-learn, que recebe os dados brutos e devolve a previsão sem etapas manuais intermediárias.
+
+## Funcionalidades da aplicação
+
+A interface Streamlit é dividida em duas abas. Na aba de previsão, o usuário preenche um formulário organizado por grupos (dados do paciente, sinais vitais e exames, informações cardiológicas e estilo de vida) e recebe a classificação de risco junto com a probabilidade estimada, quando disponível pelo `predict_proba` do pipeline carregado. Na aba de métricas ficam os gráficos gerados durante o treino: amostra do dataset, matriz de correlação, curvas precision-recall e ROC, e importância das features.
+
+As variáveis coletadas no formulário incluem idade, sexo, pressão arterial sistólica e diastólica, colesterol total, HDL, LDL e triglicerídeos, glicemia em jejum, hemoglobina glicada, IMC, frequência cardíaca, tipo de dor no peito, depressão do segmento ST, histórico familiar e de tabagismo, consumo de álcool, exercício semanal, sono, estresse, passos diários e qualidade da dieta.
+
+## Estrutura
 
 ```text
-.
-|-- README.md
-|-- model
-|   |-- heart_disease_risk_dataset.parquet
-|   |-- pipeline.pkl
-|   |-- regressao_logistica_desafio.ipynb
-|   |-- ui.py
-|   `-- plots
-|       |-- ap.png
-|       |-- correlacao.png
-|       |-- importancia_features_target.png
-|       `-- roc_auc.png
-|-- stream_lit_tutorial
-`-- ui
+heart_desease_ui/
+├── README.md
+├── ui.py
+├── pipeline.pkl
+├── heart_disease_risk_dataset.parquet
+├── regressao_logistica_desafio.ipynb
+├── requirements.txt
+└── plots/
+    ├── ap.png
+    ├── correlacao.png
+    ├── importancia_features_target.png
+    └── roc_auc.png
 ```
 
-## Principais Arquivos
+`ui.py` é a aplicação Streamlit. `pipeline.pkl` contém o pipeline treinado de pré-processamento e classificação. `regressao_logistica_desafio.ipynb` documenta a etapa de exploração, treino e avaliação. `plots/` guarda os gráficos exibidos na aba de métricas.
 
-- `model/ui.py`: aplicacao Streamlit usada para preencher o formulario e gerar previsoes.
-- `model/pipeline.pkl`: pipeline treinado contendo pre-processamento e modelo de classificacao.
-- `model/heart_disease_risk_dataset.parquet`: dataset utilizado no projeto.
-- `model/regressao_logistica_desafio.ipynb`: notebook com a etapa de exploracao, treino e avaliacao.
-- `model/plots/`: graficos exibidos na aba de metricas da interface.
-
-## Dados de Entrada
-
-O formulario coleta variaveis como:
-
-- idade;
-- sexo;
-- pressao arterial sistolica e diastolica;
-- colesterol total, HDL, LDL e triglicerideos;
-- glicemia em jejum;
-- hemoglobina glicada;
-- IMC;
-- frequencia cardiaca;
-- tipo de dor no peito;
-- depressao do segmento ST;
-- historico familiar;
-- historico de tabagismo;
-- consumo de alcool;
-- exercicio semanal;
-- sono, estresse, passos diarios e qualidade da dieta.
-
-## Como Executar
-
-1. Crie e ative um ambiente virtual:
+## Como executar
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
+pip install -r requirements.txt
+streamlit run ui.py
 ```
 
-2. Instale as dependencias principais:
+Acesse a URL exibida pelo Streamlit no terminal.
 
-```bash
-pip install streamlit pandas scikit-learn joblib pyarrow
-```
+## Observações de ambiente
 
-3. Execute a aplicacao:
+`pipeline.pkl` deve ser carregado preferencialmente com a mesma versão de scikit-learn usada no treino (`scikit-learn==1.7.2`, ver `requirements.txt`). Uma versão diferente pode gerar avisos de compatibilidade ao carregar o modelo.
 
-```bash
-streamlit run model/ui.py
-```
+## Stack
 
-4. Acesse a URL exibida pelo Streamlit no terminal.
-
-## Modelo
-
-O modelo salvo em `model/pipeline.pkl` e um pipeline do scikit-learn. Ele recebe os dados em formato tabular, aplica as transformacoes necessarias e retorna a classificacao prevista.
-
-A aplicacao tambem tenta exibir a probabilidade estimada de risco usando `predict_proba`, caso esse metodo esteja disponivel no pipeline carregado.
-
-## Metricas e Visualizacoes
-
-A interface apresenta uma aba com:
-
-- amostra do dataset original;
-- matriz de correlacao;
-- curva Precision-Recall;
-- curva ROC;
-- importancia das features.
-
-Esses arquivos estao armazenados em `model/plots/`.
-
-## Observacoes de Ambiente
-
-O arquivo `pipeline.pkl` deve ser carregado preferencialmente com a mesma versao do scikit-learn usada no treinamento. Caso haja diferenca de versao, o Python pode emitir avisos de compatibilidade ao carregar o modelo.
-
-Para maior reprodutibilidade, recomenda-se registrar as versoes das bibliotecas usadas no treino e na execucao da aplicacao.
-
-## Fonte do Dataset
-
-Dataset utilizado no treinamento:
-
-https://www.kaggle.com/datasets/srisyra02/heart-disease-risk-2026
+Python, Scikit-Learn, Streamlit, Pandas, PyArrow.
